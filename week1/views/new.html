@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#headers").load("http://127.0.0.1:5500/week1/views/common/header.html");
+        });
+    </script>
+</head>
+
+<body class="body">
+    <div id="headers"></div>
+
+    <div class="index">
+        <h1 class="maintext">New</h1>
+        <form id="newContacts">
+            <fieldset>
+                <div class="wrap">
+                    <p class="name" style="padding-right:5px">Name</p>
+                    <input class="input" type="text" id="name" placeholder="이름"> <br/>
+                </div>
+                <div class="wrap">
+                    <p class="name">E-mail</p>
+                    <input class="input" type="text" id="email" placeholder="이메일"> <br/>
+                </div>
+                <div class="wrap">
+                    <p class="name">Phone</p>
+                    <input class="input" type="text" id="phone" placeholder="전화번호"> <br/>
+                    <!-- <input type="tel" id="phone" placeholder="전화번호"> <br/> -->
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="button">submit</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+</body>
+
+
+<script>
+    const create = document.getElementById('newContacts');
+    create.addEventListener('submit', async(e) => {
+        e.preventDefault();
+        const name = e.target.name.value;
+        const email = e.target.email.value;
+        const phone = e.target.phone.value;
+
+        if (!name) {
+            return alert('이름을 입력하세요');
+        }
+        if (!email) {
+            return alert('이메일을 입력하세요');
+        }
+        if (!phone) {
+            return alert('전화번호를 입력하세요');
+        }
+        try {
+            if (confirm("새로운 연락처를 등록하시겠습니까?") == true) {
+                await axios.post('/contacts', {
+                    name,
+                    email,
+                    phone
+                });
+                alert('등록이 완료되었습니다.');
+                document.location.href = `../contacts`;
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    });
+</script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</html>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+    .body {
+        background-color: #373737;
+        color: white;
+        font-family: "Montserrat", sans-serif;
+    }
+    
+    .index {
+        padding: 3%;
+    }
+    
+    .maintext {
+        margin-bottom: 2%;
+    }
+    
+    .wrap {
+        margin: 4%;
+    }
+    
+    .name {
+        display: inline;
+        background-color: #F2C661;
+        padding: 0.5%;
+        border-radius: 10%;
+        color: black;
+        font-weight: 600;
+        font-size: 1.2em;
+    }
+    
+    .button {
+        background-color: #f8f7f1;
+        border: none;
+        padding: 1%;
+        margin-bottom: 3%;
+        border-radius: 10%;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 1.2em;
+        margin-right: 1%;
+        border: 1px solid #f8f7f1;
+    }
+    
+    .button:hover {
+        background-color: #171717;
+        color: #f8f7f1;
+    }
+    
+    .input {
+        width: 100%;
+        height: 50px;
+        margin-top: 3%;
+        padding: 1%;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        background-color: #f8f7f1;
+    }
+</style>
